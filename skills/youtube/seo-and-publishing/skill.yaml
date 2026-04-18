@@ -1,0 +1,32 @@
+id: youtube.seo-and-publishing
+name: SEO and Publishing
+domain: youtube
+canonical_version: 1.0.0
+status: active
+summary: Package a YouTube video for publication with titles, description, metadata and final publishing notes.
+inputs:
+  - video_summary
+  - target_audience
+  - primary_goal
+  - thumbnail_direction
+  - keyword_focus
+  - publication_context
+  - constraints
+outputs:
+  - publishing_strategy
+  - title_options
+  - description_package
+  - metadata_package
+  - chapters_and_publishing_notes
+  - final_decision
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.0.0
+  codex:
+    status: supported
+    adapter_version: 1.0.0
+  opencode:
+    status: supported
+    adapter_version: 1.0.0
+

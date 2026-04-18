@@ -1,0 +1,29 @@
+id: youtube.script-writer
+name: Script Writer
+domain: youtube
+canonical_version: 1.1.0
+status: active
+summary: Create retention-oriented scripts with clear hooks and CTA.
+inputs:
+  - approved_topic
+  - audience
+  - target_duration
+  - brand_tone
+  - call_to_action_goal
+  - constraints
+outputs:
+  - strategy
+  - hook
+  - segment_outline
+  - full_script
+  - call_to_action
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.1.0
+  codex:
+    status: supported
+    adapter_version: 1.1.0
+  opencode:
+    status: supported
+    adapter_version: 1.1.0

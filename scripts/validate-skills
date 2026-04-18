@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parent.parent
+SKILLS_ROOT = ROOT / "skills"
+EXPECTED_AGENTS = ("claude", "codex", "opencode")
+ALLOWED_AGENT_STATUSES = {"supported", "experimental", "deprecated", "planned"}
+SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
+
+
+def parse_skill_yaml(path: Path) -> dict:
+    data = {
+        "inputs": [],
+        "outputs": [],
+        "supported_agents": {},
+    }
+    section = None
+    current_agent = None
+
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.rstrip()
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+
+        if not line.startswith(" "):
+            section = None
+            current_agent = None
+
+            if stripped.startswith("inputs:"):
+                section = "inputs"
+                continue
+            if stripped.startswith("outputs:"):
+                section = "outputs"
+                continue
+            if stripped.startswith("supported_agents:"):
+                section = "supported_agents"
+                continue
+
+            key, sep, value = stripped.partition(":")
+            if sep:
+                data[key] = value.strip()
+            continue
+
+        if section in {"inputs", "outputs"}:
+            if stripped.startswith("- "):
+                data[section].append(stripped[2:].strip())
+            continue
+
+        if section == "supported_agents":
+            if line.startswith("  ") and not line.startswith("    ") and stripped.endswith(":"):
+                current_agent = stripped[:-1]
+                data["supported_agents"][current_agent] = {}
+                continue
+
+            if current_agent and line.startswith("    "):
+                key, sep, value = stripped.partition(":")
+                if sep:
+                    data["supported_agents"][current_agent][key] = value.strip()
+
+    return data
+
+
+def validate_skill(skill_dir: Path) -> list[str]:
+    errors: list[str] = []
+    domain = skill_dir.parent.name
+    slug = skill_dir.name
+
+    expected_files = [
+        skill_dir / "README.md",
+        skill_dir / "skill.yaml",
+        skill_dir / "examples" / "README.md",
+        skill_dir / "tests" / "README.md",
+        skill_dir / "assets" / "README.md",
+    ]
+
+    for file_path in expected_files:
+        if not file_path.exists():
+            errors.append(f"missing required file: {file_path.relative_to(ROOT)}")
+
+    skill_yaml = skill_dir / "skill.yaml"
+    if not skill_yaml.exists():
+        return errors
+
+    data = parse_skill_yaml(skill_yaml)
+
+    required_scalar_fields = [
+        "id",
+        "name",
+        "domain",
+        "canonical_version",
+        "status",
+        "summary",
+    ]
+    for field in required_scalar_fields:
+        if not data.get(field):
+            errors.append(f"{skill_yaml.relative_to(ROOT)} missing field `{field}`")
+
+    if data.get("id") and data["id"] != f"{domain}.{slug}":
+        errors.append(
+            f"{skill_yaml.relative_to(ROOT)} has id `{data['id']}` but expected `{domain}.{slug}`"
+        )
+
+    if data.get("domain") and data["domain"] != domain:
+        errors.append(
+            f"{skill_yaml.relative_to(ROOT)} has domain `{data['domain']}` but expected `{domain}`"
+        )
+
+    canonical_version = data.get("canonical_version", "")
+    if canonical_version and not SEMVER_RE.match(canonical_version):
+        errors.append(
+            f"{skill_yaml.relative_to(ROOT)} has invalid canonical_version `{canonical_version}`"
+        )
+
+    for list_field in ("inputs", "outputs"):
+        values = data.get(list_field, [])
+        if not values:
+            errors.append(f"{skill_yaml.relative_to(ROOT)} has empty `{list_field}`")
+        elif any(not value for value in values):
+            errors.append(f"{skill_yaml.relative_to(ROOT)} has blank entries in `{list_field}`")
+
+    supported_agents = data.get("supported_agents", {})
+    if not supported_agents:
+        errors.append(f"{skill_yaml.relative_to(ROOT)} missing `supported_agents` entries")
+
+    for agent in EXPECTED_AGENTS:
+        agent_data = supported_agents.get(agent)
+        if not agent_data:
+            errors.append(f"{skill_yaml.relative_to(ROOT)} missing supported_agents.{agent}")
+            continue
+
+        status = agent_data.get("status")
+        if status not in ALLOWED_AGENT_STATUSES:
+            errors.append(
+                f"{skill_yaml.relative_to(ROOT)} has invalid status `{status}` for agent `{agent}`"
+            )
+
+        adapter_version = agent_data.get("adapter_version")
+        if status != "planned":
+            if not adapter_version:
+                errors.append(
+                    f"{skill_yaml.relative_to(ROOT)} missing adapter_version for agent `{agent}`"
+                )
+            elif not SEMVER_RE.match(adapter_version):
+                errors.append(
+                    f"{skill_yaml.relative_to(ROOT)} has invalid adapter_version `{adapter_version}` for agent `{agent}`"
+                )
+
+        adapter_file = skill_dir / "adapters" / agent / "SKILL.md"
+        if status != "planned" and not adapter_file.exists():
+            errors.append(f"missing adapter file: {adapter_file.relative_to(ROOT)}")
+
+    return errors
+
+
+def find_skill_dirs(skills_root: Path) -> list[Path]:
+    return sorted(path.parent for path in skills_root.rglob("skill.yaml"))
+
+
+def main() -> int:
+    if not SKILLS_ROOT.exists():
+        print("ERROR: `skills/` directory not found.")
+        return 1
+
+    skill_dirs = find_skill_dirs(SKILLS_ROOT)
+    if not skill_dirs:
+        print("ERROR: no skills found under `skills/`.")
+        return 1
+
+    all_errors: list[str] = []
+    for skill_dir in skill_dirs:
+        all_errors.extend(validate_skill(skill_dir))
+
+    if all_errors:
+        print(f"FAIL: found {len(all_errors)} validation issue(s).\n")
+        for error in all_errors:
+            print(f"- {error}")
+        return 1
+
+    print(f"PASS: validated {len(skill_dirs)} skill(s) successfully.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

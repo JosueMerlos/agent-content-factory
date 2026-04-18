@@ -1,0 +1,28 @@
+id: youtube.topic-research
+name: Topic Research
+domain: youtube
+canonical_version: 1.1.0
+status: active
+summary: Discover viral topics, keyword angles and content opportunities.
+inputs:
+  - niche
+  - audience
+  - platform
+  - content_goal
+  - constraints
+outputs:
+  - prioritized_topics
+  - keyword_clusters
+  - title_angles
+  - competition_notes
+  - script_writer_handoff
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.1.0
+  codex:
+    status: supported
+    adapter_version: 1.1.0
+  opencode:
+    status: supported
+    adapter_version: 1.1.0

@@ -1,0 +1,29 @@
+id: youtube.voiceover-generator
+name: Voiceover Generator
+domain: youtube
+canonical_version: 1.1.0
+status: active
+summary: Prepare narration-ready scripts and voice generation parameters.
+inputs:
+  - final_script
+  - language
+  - voice_style
+  - estimated_duration
+  - platform
+  - constraints
+outputs:
+  - voice_strategy
+  - narration_script
+  - pause_markers
+  - tone_notes
+  - voice_tool_settings
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.1.0
+  codex:
+    status: supported
+    adapter_version: 1.1.0
+  opencode:
+    status: supported
+    adapter_version: 1.1.0

@@ -1,0 +1,29 @@
+id: youtube.copyright-compliance
+name: Copyright Compliance
+domain: youtube
+canonical_version: 1.0.0
+status: active
+summary: Review copyright and third-party asset risk before publication.
+inputs:
+  - platform
+  - script_summary
+  - asset_inventory
+  - third_party_material
+  - license_context
+  - constraints
+outputs:
+  - compliance_snapshot
+  - asset_risk_review
+  - policy_flags
+  - decision
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.0.0
+  codex:
+    status: supported
+    adapter_version: 1.0.0
+  opencode:
+    status: supported
+    adapter_version: 1.0.0
+

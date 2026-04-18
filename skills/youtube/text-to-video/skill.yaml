@@ -1,0 +1,29 @@
+id: youtube.text-to-video
+name: Text to Video
+domain: youtube
+canonical_version: 1.1.0
+status: active
+summary: Convert scripts into scene-by-scene video plans.
+inputs:
+  - narration_or_script
+  - visual_style
+  - duration
+  - output_format
+  - platform
+  - constraints
+outputs:
+  - visual_strategy
+  - scene_list
+  - b_roll_suggestions
+  - on_screen_text
+  - editing_notes
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.1.0
+  codex:
+    status: supported
+    adapter_version: 1.1.0
+  opencode:
+    status: supported
+    adapter_version: 1.1.0

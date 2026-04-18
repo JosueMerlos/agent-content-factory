@@ -1,0 +1,28 @@
+id: youtube.full-content-pipeline
+name: Full Content Pipeline
+domain: youtube
+canonical_version: 1.3.0
+status: active
+summary: Orchestrate the full content workflow from brief to publication-ready assets.
+inputs:
+  - brief
+  - platform
+  - goal
+  - asset_status
+  - constraints
+outputs:
+  - pipeline_status
+  - execution_plan
+  - stage_status
+  - skill_handoffs
+  - publication_checklist
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.3.0
+  codex:
+    status: supported
+    adapter_version: 1.3.0
+  opencode:
+    status: supported
+    adapter_version: 1.3.0

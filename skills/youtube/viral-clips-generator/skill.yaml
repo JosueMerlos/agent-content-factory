@@ -1,0 +1,28 @@
+id: youtube.viral-clips-generator
+name: Viral Clips Generator
+domain: youtube
+canonical_version: 1.1.0
+status: active
+summary: Identify short-form clips with high retention or hook potential.
+inputs:
+  - long_video_or_transcript
+  - shorts_goal
+  - platform
+  - subtitle_style
+  - constraints
+outputs:
+  - clip_strategy
+  - recommended_clips
+  - short_hooks
+  - captions
+  - cut_notes
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.1.0
+  codex:
+    status: supported
+    adapter_version: 1.1.0
+  opencode:
+    status: supported
+    adapter_version: 1.1.0

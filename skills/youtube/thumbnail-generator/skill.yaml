@@ -1,0 +1,29 @@
+id: youtube.thumbnail-generator
+name: Thumbnail Generator
+domain: youtube
+canonical_version: 1.1.0
+status: active
+summary: Create click-driven thumbnail concepts and testing variants.
+inputs:
+  - video_topic
+  - target_emotion
+  - brand_guidelines
+  - desired_variants
+  - title
+  - constraints
+outputs:
+  - thumbnail_strategy
+  - thumbnail_concepts
+  - short_copy
+  - layout_suggestions
+  - ab_test_ideas
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.1.0
+  codex:
+    status: supported
+    adapter_version: 1.1.0
+  opencode:
+    status: supported
+    adapter_version: 1.1.0
