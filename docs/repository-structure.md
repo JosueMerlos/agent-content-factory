@@ -28,6 +28,17 @@ scripts/
   README.md
 
 skills/
+  content/
+    content-orchestrator/
+      README.md
+      skill.yaml
+      adapters/
+        claude/SKILL.md
+        codex/SKILL.md
+        opencode/SKILL.md
+      examples/README.md
+      tests/README.md
+      assets/README.md
   youtube/
     topic-research/
       README.md
@@ -49,6 +60,11 @@ skills/
 templates/
   briefs/
     content-brief.md
+  presets/
+    youtube-short.md
+    youtube-longform.md
+    tiktok-short.md
+    instagram-reel.md
   prompts/
     video-prompt-template.md
   workflows/
@@ -85,4 +101,3 @@ Evita nombres atados a una sola herramienta salvo que sea estrictamente necesari
 
 - mejor `voiceover-generator`
 - peor `elevenlabs-skill`
-

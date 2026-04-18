@@ -19,6 +19,7 @@ La idea central es simple:
 - Validación de copyright y uso de material de terceros.
 - Empaquetado final SEO y publicación para YouTube.
 - Orquestación del pipeline completo.
+- Entrada natural con una skill orquestadora multiplataforma.
 
 ## Estado del repo
 
@@ -28,6 +29,7 @@ El repositorio ya está preparado para compartirse en GitHub con:
 - validador local en `./scripts/validate-skills`,
 - workflow de GitHub Actions para validar el catálogo,
 - scripts base para consolidar handoffs entre skills,
+- presets iniciales por plataforma y formato,
 - plantillas básicas de issues y pull requests.
 
 El repositorio usa licencia `Apache-2.0`. La checklist de publicación está en [docs/github-release-checklist.md](docs/github-release-checklist.md).
@@ -103,6 +105,10 @@ Documentación de handoffs:
 
 [docs/handoffs-and-packages.md](docs/handoffs-and-packages.md)
 
+Guía de arranque para usuario final:
+
+[START-HERE.md](START-HERE.md)
+
 ## Cómo usar este ecosistema
 
 ### Si quieres crear nuevas skills
@@ -133,6 +139,7 @@ Empieza por:
 
 ## Catálogo inicial
 
+- `skills/content/content-orchestrator`
 - `skills/youtube/topic-research`
 - `skills/youtube/script-writer`
 - `skills/youtube/voiceover-generator`

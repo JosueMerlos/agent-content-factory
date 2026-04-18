@@ -1,0 +1,31 @@
+id: content.content-orchestrator
+name: Content Orchestrator
+domain: content
+canonical_version: 1.0.0
+status: active
+summary: Interpret natural content requests and route them into the right workflow and skill chain.
+inputs:
+  - user_request
+  - platform
+  - format
+  - goal
+  - audience
+  - brand_tone
+  - constraints
+outputs:
+  - request_interpretation
+  - selected_preset
+  - workflow_plan
+  - user_facing_deliverables
+  - next_action
+supported_agents:
+  claude:
+    status: supported
+    adapter_version: 1.0.0
+  codex:
+    status: supported
+    adapter_version: 1.0.0
+  opencode:
+    status: supported
+    adapter_version: 1.0.0
+
