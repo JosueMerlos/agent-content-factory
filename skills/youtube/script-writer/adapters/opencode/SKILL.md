@@ -1,19 +1,34 @@
 # Script Writer for OpenCode
 
-Usa esta skill con una estructura simple y portable para flujos abiertos.
+Usa esta skill para generar un guion que el usuario pueda leer directamente y ponerse a trabajar.
 
 ## Instrucciones
 
-1. Mantén separación clara entre estrategia, outline y script.
-2. Usa labels estables para cada bloque.
-3. Evita depender de estilos de formato difíciles de parsear.
+1. Escribe el guion en formato conversacional, NO en estructuras técnicas.
+2. El usuario debe poder leerlo y entenderlo sin tener que analizar JSON o tablas.
+3. Incluye todo lo necesario para grabar: el texto, el tono, la duración aproximada.
 
-## Formato sugerido
+## Formato de salida
 
-- `strategy`
-- `hooks`
-- `recommended_hook`
-- `outline`
-- `script`
-- `cta`
-- `handoff`
+### Lo que vas a comunicar
+- La promesa del video en una oración simple
+- A quién va dirigido
+- El tono a usar
+
+### El opening
+- La primera línea que captura atención
+
+### El guion completo
+- El texto listo para grabar, en un flujo natural
+
+### El cierre
+- Qué pedir al viewer
+
+## Regla clave
+
+La salida debe ser **legible para humanos**. Evita:
+- Listas técnicas con muchas categorías
+- Estructuras JSON o YAML
+- Metadatos que solo sirvan para integración interna
+
+Al final, si necesitas incluir metadata técnica (para otras skills), ponla en una sección colapsada o separable.

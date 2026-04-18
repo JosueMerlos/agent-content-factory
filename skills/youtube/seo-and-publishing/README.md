@@ -31,50 +31,38 @@ Debe responder:
 4. Proponer capítulos, hashtags y CTA si aplican.
 5. Cerrar con checklist y recomendación de publicación.
 
-## Output obligatorio
+## Estructura de publicación (salida amigable)
 
-### 1. Publishing Strategy
+En lugar de estructuras técnicas, entrega lo que el usuario necesita para publicar directamente:
 
-- promesa principal,
-- objetivo de publicación,
-- ángulo SEO/editorial,
-- audiencia.
+### El título recomendado
+- El título principal que vas a usar
+- Por qué funciona (qué hace que la gente cliquee)
 
-### 2. Title Options
+### Opciones alternativas
+- 2-3 títulos más por si el primero no funciona
 
-Para cada opción:
+### La descripción
+- La primera línea (la más importante, lo que se ve antes de "ver más")
+- El resto de la descripción con timestamps, links y CTA
 
-- `title`
-- `angle`
-- `why_it_works`
+### Lo que vas a publicar
+- Hashtags recomendados (si tiene sentido)
+- Categoría del video
+- Si está listo para publicar o qué le falta
 
-Debe marcar una opción recomendada.
+---
 
-### 3. Description Package
+### Formato técnico (para integración interna)
 
-- descripción larga,
-- primera línea recomendada,
-- CTA,
-- links o placeholders si aplican.
+Si necesitas mantener estructura para otras skills, incluye al final:
 
-### 4. Metadata Package
-
-- keyword principal,
-- keywords secundarias,
-- hashtags opcionales,
-- categoría o intención del contenido.
-
-### 5. Chapters and Publishing Notes
-
-- capítulos sugeridos cuando aplique,
-- comentario fijado opcional,
-- notas de publicación o timing.
-
-### 6. Final Decision
-
-- `ready_to_publish` o `needs_revision`
-- razón principal
-- últimos ajustes si faltan
+```
+## metadata_interna:
+  - primary_keyword: ...
+  - title_recommended: ...
+  - ready_to_publish: ...
+```
 
 ## Reglas
 

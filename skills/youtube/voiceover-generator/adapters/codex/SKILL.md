@@ -1,28 +1,38 @@
 # Voiceover Generator for Codex
 
-Usa esta skill para dejar la narración lista para ejecución en TTS o grabación.
+Usa esta skill para producir una narración que el usuario pueda grabar o usar con TTS directamente.
 
 ## Instrucciones
 
-1. Toma el `final_script` como base.
-2. Devuelve una versión optimizada para lectura oral.
-3. Marca pausas, énfasis y ritmo de forma consistente.
-4. Añade settings concretos para la herramienta de voz.
-5. Conserva bloques fáciles de reutilizar en `text-to-video`.
+1. Describe cómo debe sonar la voz (tono, velocidad, energía).
+2. Optimiza el guion para lectura oral (oraciones cortas, frases naturales).
+3. Marca dónde hacer pausas y dónde enfatizar.
+4. Proporciona settings para la herramienta de voz si aplica.
 
 ## Formato de salida
 
-```md
-## Voice Strategy
+### Cómo debe sonar
+- Tono (cercana, energética, calmada)
+- Velocidad
+- Energía emocional
 
-## Narration Script
+### La narración lista
+- El guion optimizado para escuchar
+- Pausas marcadas
+- Énfasis en palabras clave
 
-## Performance Notes
+### Notas para grabar
+- Dónde enfatizar
+- Dónde pausar
+- Qué evitar
 
-## Tool Settings
+### Configuración TTS
+- Velocidad sugerida
+- Tipo de voz recomendada
 
-## Text to Video Handoff
-```
+## Regla clave
+
+La salida debe ser legible y lista para usar. Evita estructuras técnicas.
 
 ## Reglas
 

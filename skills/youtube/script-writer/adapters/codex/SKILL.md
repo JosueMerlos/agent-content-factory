@@ -1,33 +1,37 @@
 # Script Writer for Codex
 
-Usa esta skill para producir un guion modular y operable dentro del pipeline.
+Usa esta skill para producir un guion que el usuario pueda leer directamente y ponerse a trabajar.
 
 ## Instrucciones
 
-1. Usa el tema aprobado como verdad principal.
-2. Resume la estrategia antes de escribir el guion.
-3. Entrega entre 1 y 3 hooks y marca uno como recomendado.
-4. Estructura el guion por segmentos con objetivo claro.
-5. Cierra con CTA y un bloque de handoff para `voiceover-generator`.
+1. Escribe el guion en formato conversacional, NO en estructuras técnicas.
+2. El usuario debe poder leerlo y entenderlo sin tener que analizar tablas o listas.
+3. Incluye todo lo necesario para grabar: el texto, el tono, la duración aproximada.
 
 ## Formato de salida
 
-```md
-## Strategy
+### Lo que vas a comunicar
+- La promesa del video en una oración simple
+- A quién va dirigido
+- El tono a usar
 
-## Hook Options
+### El opening
+- La primera línea que captura atención
 
-## Recommended Hook
+### El guion completo
+- El texto listo para grabar, en un flujo natural
 
-## Segment Outline
-| Segment | Goal | Key idea | Est. time |
+### El cierre
+- Qué pedir al viewer
 
-## Full Script
+## Regla clave
 
-## CTA
+La salida debe ser **legible para humanos**. Evita:
+- Listas técnicas con muchas categorías
+- Estructuras JSON o YAML
+- Metadatos que solo sirvan para integración interna
 
-## Voiceover Handoff
-```
+Al final, si necesitas incluir metadata técnica (para otras skills), ponla en una sección colapsada o separable.
 
 ## Reglas
 

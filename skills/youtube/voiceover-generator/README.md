@@ -28,31 +28,43 @@ Esta skill debe producir una narración que:
 4. Ajustar el ritmo a la duración objetivo.
 5. Proponer settings prácticos para TTS o grabación.
 
-## Output obligatorio
+## Estructura de la narración (salida amigable)
 
-### 1. Voice Strategy
+En lugar de estructuras técnicas, entrega una narración lista para grabar o usar con TTS:
 
-- estilo buscado,
-- energía,
-- ritmo,
-- intención emocional.
+### Cómo debe sonar
+- El tono (cercana, energética, calmada, profesional)
+- La velocidad (rápido y dinámico, o lento y pausado)
+- La emoción general (entusiasmo, seriedad, curiosidad)
 
-### 2. Narration Script
+### La narración lista
+El guion optimizado para escuchar, no para leer. 
+- Oraciones cortas, fáciles de decir
+- Las pausas marcadas con "..." o línea nueva
+- Palabras resaltadas con mayúsculas cuando corresponda
 
-- guion final optimizado para voz,
-- con pausas o respiraciones marcadas cuando aporten claridad.
+### Notas para grabar
+- Dónde poner énfasis (palabras clave)
+- Dónde hacer pausas (momentos de impacto)
+- Qué evitar (pronunciaciones difíciles, frases muy largas)
 
-### 3. Performance Notes
+### Configuración para TTS (si usas voz sintética)
+- Velocidad sugerida
+- Qué tipo de voz (masculina/femenina, joven/madura)
 
-- palabras a enfatizar,
-- cambios de tono,
-- advertencias de pronunciación si hacen falta.
+---
 
-### 4. Tool Settings
+### Formato técnico (para integración interna)
 
-- velocidad sugerida,
-- estabilidad o expresividad si aplica,
-- notas para clonación o locución manual.
+Si necesitas mantener estructura para otras skills, incluye al final:
+
+```
+## metadata_interna:
+  - voice_style: ...
+  - energy_level: ...
+  - duration_estimate: ...
+  - language: ...
+```
 
 ## Reglas
 

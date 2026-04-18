@@ -28,35 +28,43 @@ Esta skill debe producir un guion que:
 4. Añadir transiciones o micro-hooks para sostener la retención.
 5. Cerrar con un CTA alineado al objetivo real del canal.
 
-## Estructura mínima del guion
+## Estructura del guion (salida amigable)
 
-### 1. Strategy
+En lugar de una estructura técnica, entrega el guion en formato conversacional que el usuario pueda leer directamente:
 
-- promesa principal,
-- audiencia,
-- objeción principal,
-- resultado deseado.
+### 🎯 Lo que vas a comunicar
 
-### 2. Hook
+- La promesa del video en una oración
+- A quién va dirigido
+- El tono a usar
 
-- 1 a 3 opciones de hook,
-- una versión recomendada.
+### 📢 El opening (hook)
 
-### 3. Segment Outline
+- La primera línea que va a capturar atención
+- Por qué funciona (opcional)
 
-- segmentos con objetivo narrativo,
-- idea clave de cada parte,
-- tiempo estimado por bloque.
+### 📝 El guion completo
 
-### 4. Full Script
+El texto entero listo para grabar, en un flujo natural y continuo, como si lo dijera alguien hablando con un amigo.
 
-Guion completo listo para narración o grabación.
+### 👋 El cierre
 
-### 5. CTA
+- Qué pedir al viewer
+- Por qué tiene sentido para este contenido
 
-- CTA principal,
-- razón por la que encaja,
-- variante suave si el contenido es más educativo que comercial.
+---
+
+### Formato técnico (para integración interna)
+
+Si necesitas mantener estructura para pasando a otras skills, incluye al final en una sección colapsada:
+
+```
+## metadata_interna:
+  - promise: ...
+  - audience: ...
+  - duration_estimate: ...
+  - cta_type: ...
+```
 
 ## Reglas
 

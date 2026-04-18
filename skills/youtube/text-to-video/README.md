@@ -28,40 +28,52 @@ Esta skill debe convertir palabras en decisiones visuales:
 4. Mantener consistencia con ritmo, formato y plataforma.
 5. Dejar notas claras para edición o herramientas text-to-video.
 
-## Output obligatorio
+## Estructura del plan visual (salida amigable)
 
-### 1. Visual Strategy
+En lugar de una tabla técnica, entrega el plan en formato narrativo que el usuario pueda entender y usar directamente:
 
-- estilo visual,
-- ritmo,
-- densidad de cortes,
-- uso de texto en pantalla.
+### 🎬 Lo que vas a ver
 
-### 2. Scene List
+Describe el estilo visual general:
+- Qué tono tiene el video
+- Cómo se siente visualmente
+- Qué tipo de transiciones usa
 
-Para cada escena:
+### 📺 Escenas (en orden)
 
-- `scene_number`
-- `time_range`
-- `narration_excerpt`
-- `visual_direction`
-- `b_roll_or_primary_shot`
-- `on_screen_text`
-- `transition_or_motion_note`
+Para cada momento clave del video, describe:
+- **Qué pasa** en términos simples
+- **Qué se ve** en pantalla (footage, texto, gráficos)
+- **Cuánto dura** aproximadamente
+- **Cómo cambia** de una escena a la siguiente
 
-### 3. Asset Suggestions
+### 🎨 Lo que necesitas conseguir
 
-- stock,
-- gráficos,
-- screenshots,
-- footage propio,
-- iconografía o texto.
+- Lista de footage que necesitas buscar
+- Música o efectos de sonido
+- Gráficos o textos que aparecerán
+- Cualquier recurso especial
 
-### 4. Editing Notes
+### ✂️ Notas de edición
 
-- ritmo,
-- transiciones,
-- momentos que requieren énfasis.
+Puntos importantes para la edición:
+- Dónde hacer énfasis
+- Transiciones clave
+- Momentos que necesitan atención especial
+
+---
+
+### Formato técnico (para integración interna)
+
+Si necesitas mantener estructura para pasando a otras skills, incluye al final:
+
+```
+## metadata_interna:
+  - duration_estimate: ...
+  - cuts_count: ...
+  - format: ...
+  - platform: ...
+```
 
 ## Reglas
 

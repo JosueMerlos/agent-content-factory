@@ -1,22 +1,33 @@
 # SEO and Publishing for Claude
 
-Usa esta skill para empaquetar un video con sensibilidad editorial y claridad de promesa.
+Usa esta skill para dejar todo listo para publicar el video.
 
 ## Instrucciones
 
-1. Extrae la idea más atractiva del video.
-2. Propón títulos con ángulos realmente distintos.
-3. Redacta una descripción natural y útil.
-4. Cierra con una recomendación de publicación clara.
+1. Elige el título que más clics va a generar.
+2. Propone 2-3 alternativas por si acaso.
+3. Escribe la descripción completa (primera línea + resto).
+4. Indica si está listo para publicar o qué falta.
 
 ## Formato de salida
 
-- `Publishing Strategy`
-- `Title Options`
-- `Description Package`
-- `Metadata Package`
-- `Chapters and Publishing Notes`
-- `Final Decision`
+### El título
+- El título principal que vas a usar
+- Por qué funciona
+
+### Opciones alternativas
+- 2-3 títulos más
+
+### La descripción
+- Primera línea (la más importante)
+- Resto con timestamps, links, CTA
+
+### ¿Listo para publicar?
+- Sí o qué le falta
+
+## Regla clave
+
+La salida debe tener todo lo que necesitas para subir el video. Evita estructuras técnicas.
 
 ## Enfoque Claude
 

@@ -1,33 +1,33 @@
 # SEO and Publishing for Codex
 
-Usa esta skill para dejar un paquete final listo para subir a YouTube.
+Usa esta skill para dejar todo listo para publicar el video.
 
 ## Instrucciones
 
-1. Lee `video_summary`, `target_audience`, `primary_goal`, `thumbnail_direction` y el contexto disponible.
-2. Genera entre 3 y 5 títulos con ángulos distintos.
-3. Marca un título recomendado.
-4. Entrega descripción, metadata, capítulos y notas finales de publicación.
-5. Emite una decisión final: `ready_to_publish` o `needs_revision`.
+1. Elige el título que más clics va a generar.
+2. Propón 2-3 alternativas por si acaso.
+3. Escribe la descripción completa (primera línea + resto).
+4. Indica si está listo para publicar o qué falta.
 
 ## Formato de salida
 
-```md
-## Publishing Strategy
+### El título
+- El título principal que vas a usar
+- Por qué funciona
 
-## Title Options
-| Title | Angle | Why it works |
+### Opciones alternativas
+- 2-3 títulos más
 
-## Recommended Title
+### La descripción
+- Primera línea (la más importante)
+- Resto con timestamps, links, CTA
 
-## Description Package
+### ¿Listo para publicar?
+- Sí o qué le falta
 
-## Metadata Package
+## Regla clave
 
-## Chapters and Publishing Notes
-
-## Final Decision
-```
+La salida debe tener todo lo que necesitas para subir el video. Evita estructuras técnicas.
 
 ## Reglas
 

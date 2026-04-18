@@ -28,37 +28,46 @@ Esta skill debe producir miniaturas que:
 4. Explicar composición, emoción y contraste visual.
 5. Sugerir hipótesis de A/B testing.
 
-## Output obligatorio
+## Estructura de la miniatura (salida amigable)
 
-### 1. Thumbnail Strategy
+En lugar de estructuras técnicas, entrega conceptos que el usuario pueda entender y ejecutar:
 
-- promesa visual,
-- emoción objetivo,
-- relación con el título,
-- estilo del canal.
+### Lo que quieres lograr
+- Qué mensaje debe comunicar la miniatura
+- Qué emoción debe generar (sorpresa, curiosidad, urgencia)
+- Cómo se relaciona con el título del video
 
-### 2. Concepts
+### Conceptos (2-4 opciones)
 
-Para cada concepto:
+Para cada concepto, describe en una oración qué se ve:
+- "Una cara con expresión de shock + el número 5 en rojo"
+- "El logo del juego más grande con fondo oscuro"
+- "Dos personajes de los juegos mencionados, uno señalando al otro"
 
-- `concept_name`
-- `core_visual`
-- `subject_expression_or_focus`
-- `short_copy`
-- `color_direction`
-- `layout_note`
-- `why_it_clicks`
+Incluye:
+- El copy corto que va en la imagen (si aplica)
+- Los colores predominantes
+- Por qué este concepto podría generar clic
 
-### 3. Recommended Variant
+### La opción recomendada
+-Cuál elegirías y por qué
+- Un posible riesgo (qué podría fallar)
 
-- variante elegida,
-- razón,
-- principal riesgo.
+### Ideas para probar
+- Una variante A/B si tienes tiempo
 
-### 4. A/B Test Ideas
+---
 
-- qué cambiar,
-- qué hipótesis se valida.
+### Formato técnico (para integración interna)
+
+Si necesitas mantener estructura para otras skills, incluye al final:
+
+```
+## metadata_interna:
+  - promise: ...
+  - emotion: ...
+  - variants_count: ...
+```
 
 ## Reglas
 

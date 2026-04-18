@@ -1,19 +1,31 @@
 # SEO and Publishing for OpenCode
 
-Usa esta skill con una estructura portable para empaquetado final de publicación.
+Usa esta skill para dejar todo listo para publicar el video.
 
 ## Instrucciones
 
-1. Separa estrategia, títulos, descripción, metadata y decisión.
-2. Usa campos estables y fáciles de reutilizar.
-3. Mantén el resultado accionable y breve.
+1. Elige el título que más clics va a generar.
+2. Propón 2-3 alternativas por si acaso.
+3. Escribe la descripción completa (primera línea + resto).
+4. Indica si está listo para publicar o qué falta.
 
-## Formato sugerido
+## Formato de salida
 
-- `publishing_strategy`
-- `title_options`
-- `description_package`
-- `metadata_package`
-- `chapters_and_publishing_notes`
-- `final_decision`
+### El título
+- El título principal que vas a usar
+- Por qué funciona
+
+### Opciones alternativas
+- 2-3 títulos más
+
+### La descripción
+- Primera línea (la más importante)
+- Resto con timestamps, links, CTA
+
+### ¿Listo para publicar?
+- Sí o qué le falta
+
+## Regla clave
+
+La salida debe tener todo lo que necesitas para subir el video. Evita estructuras técnicas.
 

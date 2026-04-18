@@ -1,26 +1,37 @@
 # Thumbnail Generator for Codex
 
-Usa esta skill para generar miniaturas listas para ejecutar por un diseñador o flujo AI.
+Usa esta skill para producir miniaturas que el usuario pueda entender y ejecutar directamente.
 
 ## Instrucciones
 
-1. Produce entre 2 y 4 conceptos.
-2. Define visual principal, copy corto y layout.
-3. Marca una variante recomendada.
-4. Cierra con ideas de A/B test.
+1. Describe la promesa visual del video en una oración.
+2. Propón 2-4 conceptos distintos y describe qué se ve en cada uno.
+3. Explica brevemente por qué cada uno podría generar clic.
+4. Recomienda uno y explica por qué.
+5. Sugiere una idea de A/B test si aplica.
 
 ## Formato de salida
 
-```md
-## Thumbnail Strategy
+### Lo que quieres lograr
+- Qué mensaje debe comunicar
+- Qué emoción generar
 
-## Concepts
-| Concept | Core visual | Copy | Layout | Why it clicks |
+### Conceptos
+Para cada uno, describe en una oración qué se ve:
+- El elemento principal (cara, objeto, texto)
+- Los colores
+- El copy corto (si aplica)
 
-## Recommended Variant
+### La opción recomendada
+- Cuál elegir y por qué
+- Un posible riesgo
 
-## A/B Test Ideas
-```
+### Idea para probar
+- Una variante si hay tiempo
+
+## Regla clave
+
+La salida debe ser legible para el usuario. Evita estructuras técnicas como tablas JSON.
 
 ## Reglas
 
