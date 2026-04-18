@@ -1,0 +1,275 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+import os
+import shutil
+import sys
+from pathlib import Path
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+LICENSE_NAME = "Apache-2.0"
+
+SKILL_MANIFEST = [
+    {
+        "folder_name": "acf-content-orchestrator",
+        "display_name": "ACF Content Orchestrator",
+        "source_dir": "skills/content/content-orchestrator",
+        "source_id": "content.content-orchestrator",
+        "trigger": (
+            "When the user asks in natural language to plan, create, package, "
+            "or publish content for YouTube, TikTok, or Instagram."
+        ),
+        "copy_presets": True,
+    },
+    {
+        "folder_name": "acf-topic-research",
+        "display_name": "ACF Topic Research",
+        "source_dir": "skills/youtube/topic-research",
+        "source_id": "youtube.topic-research",
+        "trigger": "When the user needs topic ideas, angles, titles, or keyword research for content.",
+    },
+    {
+        "folder_name": "acf-script-writer",
+        "display_name": "ACF Script Writer",
+        "source_dir": "skills/youtube/script-writer",
+        "source_id": "youtube.script-writer",
+        "trigger": "When the user needs a script, hook, outline, or CTA for a video.",
+    },
+    {
+        "folder_name": "acf-voiceover-generator",
+        "display_name": "ACF Voiceover Generator",
+        "source_dir": "skills/youtube/voiceover-generator",
+        "source_id": "youtube.voiceover-generator",
+        "trigger": "When the user needs a narration-ready version of a script or voiceover guidance.",
+    },
+    {
+        "folder_name": "acf-text-to-video",
+        "display_name": "ACF Text to Video",
+        "source_dir": "skills/youtube/text-to-video",
+        "source_id": "youtube.text-to-video",
+        "trigger": "When the user needs scene plans, visual direction, or editing guidance from a script.",
+    },
+    {
+        "folder_name": "acf-viral-clips-generator",
+        "display_name": "ACF Viral Clips Generator",
+        "source_dir": "skills/youtube/viral-clips-generator",
+        "source_id": "youtube.viral-clips-generator",
+        "trigger": "When the user needs short clips, repurposing ideas, or vertical cutdowns.",
+    },
+    {
+        "folder_name": "acf-thumbnail-generator",
+        "display_name": "ACF Thumbnail Generator",
+        "source_dir": "skills/youtube/thumbnail-generator",
+        "source_id": "youtube.thumbnail-generator",
+        "trigger": "When the user needs thumbnail concepts, CTR ideas, or visual packaging for a video.",
+    },
+    {
+        "folder_name": "acf-copyright-compliance",
+        "display_name": "ACF Copyright Compliance",
+        "source_dir": "skills/youtube/copyright-compliance",
+        "source_id": "youtube.copyright-compliance",
+        "trigger": "When the user needs to review copyright, third-party assets, or publishing risk.",
+    },
+    {
+        "folder_name": "acf-seo-and-publishing",
+        "display_name": "ACF SEO and Publishing",
+        "source_dir": "skills/youtube/seo-and-publishing",
+        "source_id": "youtube.seo-and-publishing",
+        "trigger": "When the user needs a final publication package with titles, description, metadata, or chapters.",
+    },
+]
+
+AGENT_TARGETS = {
+    "codex": Path(os.environ.get("CODEX_SKILLS_DIR", Path.home() / ".codex" / "skills")),
+    "claude": Path(os.environ.get("CLAUDE_SKILLS_DIR", Path.home() / ".claude" / "skills")),
+    "opencode": Path(
+        os.environ.get("OPENCODE_SKILLS_DIR", Path.home() / ".config" / "opencode" / "skills")
+    ),
+}
+
+
+def parse_skill_version(skill_yaml_path: Path) -> str:
+    for line in skill_yaml_path.read_text(encoding="utf-8").splitlines():
+        if line.startswith("canonical_version:"):
+            return line.split(":", 1)[1].strip()
+    return "1.0.0"
+
+
+def adapter_file(source_dir: Path, agent: str) -> Path:
+    return source_dir / "adapters" / agent / "SKILL.md"
+
+
+def strip_heading(markdown: str) -> str:
+    lines = markdown.splitlines()
+    if lines and lines[0].startswith("# "):
+        lines = lines[1:]
+    while lines and not lines[0].strip():
+        lines = lines[1:]
+    return "\n".join(lines).strip() + "\n"
+
+
+def build_skill_markdown(manifest_entry: dict, agent: str) -> str:
+    source_dir = REPO_ROOT / manifest_entry["source_dir"]
+    skill_version = parse_skill_version(source_dir / "skill.yaml")
+    adapter = strip_heading(adapter_file(source_dir, agent).read_text(encoding="utf-8"))
+    reference = strip_heading((source_dir / "README.md").read_text(encoding="utf-8"))
+
+    extra = ""
+    if manifest_entry.get("copy_presets"):
+        extra = """
+## Presets Available
+
+- `youtube-short`
+- `youtube-longform`
+- `tiktok-short`
+- `instagram-reel`
+
+Use the local `presets/` folder for the detailed workflow assumptions.
+""".strip()
+        extra += "\n"
+
+    return f"""---
+name: {manifest_entry["folder_name"]}
+description: >
+  Installed from agent-content-factory. Trigger: {manifest_entry["trigger"]}
+license: {LICENSE_NAME}
+metadata:
+  author: agent-content-factory
+  version: "{skill_version}"
+  source_skill: "{manifest_entry["source_id"]}"
+---
+
+# {manifest_entry["display_name"]}
+
+This is an installed skill package generated from the `agent-content-factory` repository.
+
+## Agent Instructions
+
+{adapter}
+
+{extra}## Canonical Reference
+
+{reference}"""
+
+
+def ensure_managed_target(path: Path, force: bool) -> None:
+    marker = path / ".acf-managed"
+    if path.exists():
+        if marker.exists() or force:
+            if path.is_symlink() or path.is_file():
+                path.unlink()
+            else:
+                shutil.rmtree(path)
+        else:
+            raise SystemExit(
+                f"ERROR: refusing to overwrite unmanaged path: {path}. Use --force to replace it."
+            )
+
+
+def install_skill(target_root: Path, manifest_entry: dict, agent: str, mode: str, force: bool) -> None:
+    source_dir = REPO_ROOT / manifest_entry["source_dir"]
+    destination = target_root / manifest_entry["folder_name"]
+    ensure_managed_target(destination, force)
+
+    destination.mkdir(parents=True, exist_ok=True)
+    (destination / ".acf-managed").write_text(
+        f"managed_by=agent-content-factory\nagent={agent}\n",
+        encoding="utf-8",
+    )
+
+    (destination / "SKILL.md").write_text(
+        build_skill_markdown(manifest_entry, agent),
+        encoding="utf-8",
+    )
+
+    if mode == "link":
+        os.symlink(source_dir / "README.md", destination / "REFERENCE.md")
+    else:
+        shutil.copy2(source_dir / "README.md", destination / "REFERENCE.md")
+
+    shutil.copy2(source_dir / "examples" / "README.md", destination / "EXAMPLES.md")
+    shutil.copy2(source_dir / "tests" / "README.md", destination / "TESTS.md")
+    shutil.copy2(source_dir / "skill.yaml", destination / "skill.yaml")
+
+    if manifest_entry.get("copy_presets"):
+        preset_dir = destination / "presets"
+        preset_dir.mkdir(exist_ok=True)
+        for preset in (
+            "youtube-short.md",
+            "youtube-longform.md",
+            "tiktok-short.md",
+            "instagram-reel.md",
+        ):
+            preset_source = REPO_ROOT / "templates" / "presets" / preset
+            if mode == "link":
+                os.symlink(preset_source, preset_dir / preset)
+            else:
+                shutil.copy2(preset_source, preset_dir / preset)
+
+
+def uninstall_skill(target_root: Path, manifest_entry: dict) -> None:
+    destination = target_root / manifest_entry["folder_name"]
+    marker = destination / ".acf-managed"
+    if destination.exists() and marker.exists():
+        shutil.rmtree(destination)
+
+
+def run(agent: str, mode: str, action: str, force: bool) -> int:
+    targets = AGENT_TARGETS.keys() if agent == "all" else (agent,)
+
+    for target_agent in targets:
+        target_root = AGENT_TARGETS[target_agent]
+        target_root.mkdir(parents=True, exist_ok=True)
+        for manifest_entry in SKILL_MANIFEST:
+            if action == "install":
+                install_skill(target_root, manifest_entry, target_agent, mode, force)
+            else:
+                uninstall_skill(target_root, manifest_entry)
+
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Install agent-content-factory skills into Codex, Claude, or OpenCode."
+    )
+    parser.add_argument(
+        "--agent",
+        choices=("codex", "claude", "opencode", "all"),
+        default="all",
+        help="Which agent should receive the installed skills.",
+    )
+    parser.add_argument(
+        "--mode",
+        choices=("copy", "link"),
+        default="copy",
+        help="Copy files into the target skill directory or symlink references where possible.",
+    )
+    parser.add_argument(
+        "--action",
+        choices=("install", "uninstall"),
+        default="install",
+        help="Install or uninstall the managed skill packages.",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Replace existing target folders even if they already exist.",
+    )
+    args = parser.parse_args()
+
+    result = run(args.agent, args.mode, args.action, args.force)
+    if args.action == "install":
+        print(f"Installed agent-content-factory skills for: {args.agent}")
+        print("Next step: restart the agent if needed, then use natural prompts via the orchestrator.")
+        print("Recommended prompt: Ayudame a planear y crear un video corto para YouTube sobre errores financieros invisibles")
+    else:
+        print(f"Uninstalled managed agent-content-factory skills for: {args.agent}")
+    return result
+
+
+if __name__ == "__main__":
+    sys.exit(main())

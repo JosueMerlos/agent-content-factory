@@ -48,3 +48,19 @@ Uso:
   --input templates/handoffs/youtube-publication-bundle.template.json \
   --output-dir out
 ```
+
+### `install-agent-content-factory`
+
+Instala la capa orquestadora y sus skills dependientes en Codex, Claude u OpenCode.
+
+Uso:
+
+```bash
+./scripts/install-agent-content-factory --agent all --mode copy
+```
+
+Desinstalar:
+
+```bash
+./scripts/install-agent-content-factory --agent all --action uninstall
+```

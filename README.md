@@ -30,6 +30,7 @@ El repositorio ya está preparado para compartirse en GitHub con:
 - workflow de GitHub Actions para validar el catálogo,
 - scripts base para consolidar handoffs entre skills,
 - presets iniciales por plataforma y formato,
+- instalación one-time setup para agentes compatibles,
 - plantillas básicas de issues y pull requests.
 
 El repositorio usa licencia `Apache-2.0`. La checklist de publicación está en [docs/github-release-checklist.md](docs/github-release-checklist.md).
@@ -97,6 +98,12 @@ Generar un paquete de publicación desde handoffs:
   --output-dir out
 ```
 
+Instalar la capa orquestadora en agentes:
+
+```bash
+./scripts/install-agent-content-factory --agent all --mode copy
+```
+
 Guía de colaboración:
 
 [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -108,6 +115,10 @@ Documentación de handoffs:
 Guía de arranque para usuario final:
 
 [START-HERE.md](START-HERE.md)
+
+Instalación en agentes:
+
+[docs/agent-installation.md](docs/agent-installation.md)
 
 ## Cómo usar este ecosistema
 
