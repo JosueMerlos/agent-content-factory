@@ -12,6 +12,18 @@ Desde el root del repo:
 ./scripts/install-agent-content-factory --agent all --mode copy
 ```
 
+En Windows (PowerShell), usa el wrapper incluido:
+
+```powershell
+.\scripts\install-agent-content-factory.ps1 --agent all --mode copy
+```
+
+También puedes invocar Python directamente:
+
+```powershell
+py -3 .\scripts\install-agent-content-factory --agent all --mode copy
+```
+
 Esto instala paquetes de skills administrados por este repo en:
 
 - `~/.codex/skills`
@@ -27,6 +39,7 @@ Copia archivos al directorio del agente. Es la opción más segura para una inst
 ### `--mode link`
 
 Crea enlaces simbólicos cuando conviene. Es útil durante desarrollo porque refleja cambios del repo más rápido.
+En Windows, si no hay permisos para symlink, el instalador hace fallback automático a `copy` y muestra un warning.
 
 ## Agentes soportados
 

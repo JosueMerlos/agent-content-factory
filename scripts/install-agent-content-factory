@@ -82,12 +82,18 @@ SKILL_MANIFEST = [
     },
 ]
 
+def default_opencode_skills_dir() -> Path:
+    if os.name == "nt":
+        appdata = os.environ.get("APPDATA")
+        if appdata:
+            return Path(appdata) / "opencode" / "skills"
+    return Path.home() / ".config" / "opencode" / "skills"
+
+
 AGENT_TARGETS = {
     "codex": Path(os.environ.get("CODEX_SKILLS_DIR", Path.home() / ".codex" / "skills")),
     "claude": Path(os.environ.get("CLAUDE_SKILLS_DIR", Path.home() / ".claude" / "skills")),
-    "opencode": Path(
-        os.environ.get("OPENCODE_SKILLS_DIR", Path.home() / ".config" / "opencode" / "skills")
-    ),
+    "opencode": Path(os.environ.get("OPENCODE_SKILLS_DIR", default_opencode_skills_dir())),
 }
 
 
@@ -169,6 +175,22 @@ def ensure_managed_target(path: Path, force: bool) -> None:
             )
 
 
+def link_or_copy(source: Path, destination: Path, mode: str) -> None:
+    if mode != "link":
+        shutil.copy2(source, destination)
+        return
+
+    try:
+        os.symlink(source, destination)
+    except OSError as exc:
+        print(
+            "WARNING: symlink unavailable, falling back to copy "
+            f"for {destination} ({exc})",
+            file=sys.stderr,
+        )
+        shutil.copy2(source, destination)
+
+
 def install_skill(target_root: Path, manifest_entry: dict, agent: str, mode: str, force: bool) -> None:
     source_dir = REPO_ROOT / manifest_entry["source_dir"]
     destination = target_root / manifest_entry["folder_name"]
@@ -185,10 +207,7 @@ def install_skill(target_root: Path, manifest_entry: dict, agent: str, mode: str
         encoding="utf-8",
     )
 
-    if mode == "link":
-        os.symlink(source_dir / "README.md", destination / "REFERENCE.md")
-    else:
-        shutil.copy2(source_dir / "README.md", destination / "REFERENCE.md")
+    link_or_copy(source_dir / "README.md", destination / "REFERENCE.md", mode)
 
     shutil.copy2(source_dir / "examples" / "README.md", destination / "EXAMPLES.md")
     shutil.copy2(source_dir / "tests" / "README.md", destination / "TESTS.md")
@@ -204,10 +223,7 @@ def install_skill(target_root: Path, manifest_entry: dict, agent: str, mode: str
             "instagram-reel.md",
         ):
             preset_source = REPO_ROOT / "templates" / "presets" / preset
-            if mode == "link":
-                os.symlink(preset_source, preset_dir / preset)
-            else:
-                shutil.copy2(preset_source, preset_dir / preset)
+            link_or_copy(preset_source, preset_dir / preset, mode)
 
 
 def uninstall_skill(target_root: Path, manifest_entry: dict) -> None:

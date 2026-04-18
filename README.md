@@ -104,6 +104,12 @@ Instalar la capa orquestadora en agentes:
 ./scripts/install-agent-content-factory --agent all --mode copy
 ```
 
+Windows (PowerShell):
+
+```powershell
+.\scripts\install-agent-content-factory.ps1 --agent all --mode copy
+```
+
 Guía de colaboración:
 
 [CONTRIBUTING.md](CONTRIBUTING.md)

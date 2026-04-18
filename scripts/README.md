@@ -59,6 +59,12 @@ Uso:
 ./scripts/install-agent-content-factory --agent all --mode copy
 ```
 
+Windows (PowerShell):
+
+```powershell
+.\scripts\install-agent-content-factory.ps1 --agent all --mode copy
+```
+
 Desinstalar:
 
 ```bash
