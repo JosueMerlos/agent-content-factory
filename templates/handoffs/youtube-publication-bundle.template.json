@@ -1,0 +1,53 @@
+{
+  "video_id": "errores-financieros-invisibles",
+  "platform": "youtube",
+  "language": "es",
+  "target_audience": "adultos latinos de 25 a 40 años que quieren organizar mejor su dinero",
+  "source_skills": {
+    "topic_research": {
+      "selected_topic": "errores que te dejan sin dinero aunque ganas bien",
+      "video_promise": "mostrar fugas financieras invisibles y como corregirlas"
+    },
+    "script_writer": {
+      "approved_topic": "errores que te dejan sin dinero aunque ganas bien",
+      "audience": "adultos latinos de 25 a 40 años que quieren organizar mejor su dinero",
+      "promise": "detectar 7 fugas financieras que sabotean el avance incluso con buen ingreso",
+      "working_title": "Ganas bien y aun asi no te alcanza: 7 errores que te estan frenando",
+      "call_to_action": "Invitar a seguir una guia inicial de orden financiero"
+    },
+    "thumbnail_generator": {
+      "recommended_variant": "Billetes saliendo de la cartera con gesto de frustracion"
+    },
+    "copyright_compliance": {
+      "decision": "revise",
+      "reason": "Hay un clip de terceros sin permiso claro",
+      "policy_flags": [
+        "No asumir fair use automatico",
+        "Reemplazar o relicenciar el clip de terceros"
+      ]
+    },
+    "seo_and_publishing": {
+      "recommended_title": "Ganas bien y aun asi no te alcanza: 7 errores que te estan frenando",
+      "title_options": [
+        "Ganas bien y aun asi no te alcanza: 7 errores que te estan frenando",
+        "El verdadero motivo por el que sigues sin avanzar aunque ganas mas",
+        "7 errores silenciosos que vacian tu dinero cada mes"
+      ],
+      "description": "Descubre los errores financieros invisibles que te estan frenando y que puedes corregir desde hoy.",
+      "cta": "Descarga o sigue una guia inicial de orden financiero.",
+      "primary_keyword": "errores financieros",
+      "secondary_keywords": [
+        "por que no me alcanza el dinero",
+        "fugas de dinero",
+        "ordenar finanzas"
+      ],
+      "chapters": [
+        "00:00 Introduccion",
+        "00:45 Error 1",
+        "02:00 Error 2",
+        "07:10 Cierre y CTA"
+      ],
+      "final_decision": "needs_revision"
+    }
+  }
+}

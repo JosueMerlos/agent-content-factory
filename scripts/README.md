@@ -30,3 +30,21 @@ Uso:
 ```bash
 ./scripts/validate-skills
 ```
+
+### `generate-publication-package`
+
+Genera un paquete final de publicación a partir de handoffs JSON entre skills.
+
+Salida:
+
+- `publication-package.json`
+- `publication-package.md`
+- `source-handoffs.json`
+
+Uso:
+
+```bash
+./scripts/generate-publication-package \
+  --input templates/handoffs/youtube-publication-bundle.template.json \
+  --output-dir out
+```

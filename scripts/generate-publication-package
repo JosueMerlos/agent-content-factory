@@ -1,0 +1,271 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+
+REQUIRED_TOP_LEVEL_KEYS = (
+    "video_id",
+    "platform",
+    "language",
+    "source_skills",
+)
+
+OPTIONAL_SKILL_KEYS = (
+    "topic_research",
+    "script_writer",
+    "thumbnail_generator",
+    "copyright_compliance",
+    "seo_and_publishing",
+)
+
+
+def load_json(path: Path) -> dict:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        raise SystemExit(f"ERROR: input file not found: {path}")
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"ERROR: invalid JSON in {path}: {exc}")
+
+
+def require_fields(data: dict, fields: tuple[str, ...]) -> list[str]:
+    missing = []
+    for field in fields:
+        if field not in data or data[field] in ("", None, []):
+            missing.append(field)
+    return missing
+
+
+def slugify(value: str) -> str:
+    normalized = re.sub(r"[^a-zA-Z0-9]+", "-", value.strip().lower())
+    return normalized.strip("-") or "publication-package"
+
+
+def first_nonempty(*values):
+    for value in values:
+        if value:
+            return value
+    return None
+
+
+def build_markdown(data: dict) -> str:
+    skills = data.get("source_skills", {})
+    script = skills.get("script_writer", {})
+    thumb = skills.get("thumbnail_generator", {})
+    compliance = skills.get("copyright_compliance", {})
+    publishing = skills.get("seo_and_publishing", {})
+    research = skills.get("topic_research", {})
+
+    recommended_title = first_nonempty(
+        publishing.get("recommended_title"),
+        publishing.get("title"),
+        script.get("working_title"),
+    )
+
+    final_decision = first_nonempty(
+        publishing.get("final_decision"),
+        compliance.get("decision"),
+        "needs_revision",
+    )
+
+    primary_cta = first_nonempty(
+        publishing.get("cta"),
+        script.get("call_to_action"),
+    )
+
+    keyword_focus = publishing.get("keyword_focus", [])
+    if isinstance(keyword_focus, str):
+        keyword_focus = [keyword_focus]
+
+    title_options = publishing.get("title_options", [])
+    if isinstance(title_options, list):
+        title_lines = "\n".join(f"- {item}" for item in title_options) or "- n/a"
+    else:
+        title_lines = f"- {title_options}"
+
+    secondary_keywords = publishing.get("secondary_keywords", [])
+    if isinstance(secondary_keywords, str):
+        secondary_keywords = [secondary_keywords]
+
+    chapters = publishing.get("chapters", [])
+    if isinstance(chapters, list):
+        chapter_lines = "\n".join(f"- {item}" for item in chapters) or "- n/a"
+    else:
+        chapter_lines = f"- {chapters}"
+
+    compliance_flags = compliance.get("policy_flags", [])
+    if isinstance(compliance_flags, list):
+        compliance_lines = "\n".join(f"- {item}" for item in compliance_flags) or "- none"
+    else:
+        compliance_lines = f"- {compliance_flags}"
+
+    clips = data.get("source_skills", {}).get("viral_clips_generator", {}).get("recommended_clips", [])
+    if isinstance(clips, list):
+        clip_lines = "\n".join(f"- {item}" for item in clips) or "- none"
+    else:
+        clip_lines = f"- {clips}"
+
+    thumbnail_summary = first_nonempty(
+        thumb.get("recommended_variant"),
+        thumb.get("core_visual"),
+        thumb.get("thumbnail_summary"),
+        "n/a",
+    )
+
+    description = first_nonempty(
+        publishing.get("description"),
+        publishing.get("description_package"),
+        "n/a",
+    )
+
+    return f"""# Publication Package
+
+## Overview
+
+- Video ID: `{data.get("video_id", "n/a")}`
+- Platform: `{data.get("platform", "n/a")}`
+- Language: `{data.get("language", "n/a")}`
+- Final decision: `{final_decision}`
+
+## Core Message
+
+- Topic: {first_nonempty(research.get("selected_topic"), script.get("approved_topic"), "n/a")}
+- Audience: {first_nonempty(script.get("audience"), data.get("target_audience"), "n/a")}
+- Promise: {first_nonempty(script.get("promise"), research.get("video_promise"), "n/a")}
+- CTA: {primary_cta or "n/a"}
+
+## Publishing Package
+
+- Recommended title: {recommended_title or "n/a"}
+- Thumbnail direction: {thumbnail_summary}
+- Primary keyword: {first_nonempty(publishing.get("primary_keyword"), "n/a")}
+- Secondary keywords: {", ".join(secondary_keywords) if secondary_keywords else "n/a"}
+
+### Title Options
+
+{title_lines}
+
+### Description
+
+{description}
+
+### Chapters
+
+{chapter_lines}
+
+## Compliance Review
+
+- Decision: `{first_nonempty(compliance.get("decision"), "n/a")}`
+- Main reason: {first_nonempty(compliance.get("reason"), compliance.get("summary"), "n/a")}
+
+### Policy Flags
+
+{compliance_lines}
+
+## Shorts / Repurposing
+
+{clip_lines}
+"""
+
+
+def normalize_package(data: dict) -> dict:
+    skills = data.get("source_skills", {})
+    publishing = skills.get("seo_and_publishing", {})
+    script = skills.get("script_writer", {})
+    compliance = skills.get("copyright_compliance", {})
+    thumbnail = skills.get("thumbnail_generator", {})
+
+    return {
+        "video_id": data["video_id"],
+        "platform": data["platform"],
+        "language": data["language"],
+        "recommended_title": first_nonempty(
+            publishing.get("recommended_title"),
+            publishing.get("title"),
+            script.get("working_title"),
+        ),
+        "title_options": publishing.get("title_options", []),
+        "description": first_nonempty(
+            publishing.get("description"),
+            publishing.get("description_package"),
+        ),
+        "primary_keyword": publishing.get("primary_keyword"),
+        "secondary_keywords": publishing.get("secondary_keywords", []),
+        "chapters": publishing.get("chapters", []),
+        "thumbnail_direction": first_nonempty(
+            thumbnail.get("recommended_variant"),
+            thumbnail.get("thumbnail_summary"),
+            thumbnail.get("core_visual"),
+        ),
+        "call_to_action": first_nonempty(
+            publishing.get("cta"),
+            script.get("call_to_action"),
+        ),
+        "compliance_decision": compliance.get("decision"),
+        "compliance_flags": compliance.get("policy_flags", []),
+        "source_skills": skills,
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Generate a publication package from structured skill handoffs."
+    )
+    parser.add_argument(
+        "--input",
+        required=True,
+        help="Path to the JSON handoff bundle.",
+    )
+    parser.add_argument(
+        "--output-dir",
+        required=True,
+        help="Directory where the publication package will be written.",
+    )
+    args = parser.parse_args()
+
+    input_path = Path(args.input).resolve()
+    output_dir = Path(args.output_dir).resolve()
+    data = load_json(input_path)
+
+    missing = require_fields(data, REQUIRED_TOP_LEVEL_KEYS)
+    if missing:
+        raise SystemExit(f"ERROR: missing required top-level field(s): {', '.join(missing)}")
+
+    source_skills = data.get("source_skills")
+    if not isinstance(source_skills, dict) or not source_skills:
+        raise SystemExit("ERROR: `source_skills` must be a non-empty object.")
+
+    if not any(key in source_skills for key in OPTIONAL_SKILL_KEYS):
+        raise SystemExit(
+            "ERROR: `source_skills` must contain at least one known skill handoff."
+        )
+
+    bundle_name = slugify(data["video_id"])
+    target_dir = output_dir / bundle_name
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    normalized = normalize_package(data)
+    markdown = build_markdown(data)
+
+    (target_dir / "publication-package.json").write_text(
+        json.dumps(normalized, indent=2, ensure_ascii=True) + "\n",
+        encoding="utf-8",
+    )
+    (target_dir / "publication-package.md").write_text(markdown, encoding="utf-8")
+    (target_dir / "source-handoffs.json").write_text(
+        json.dumps(data, indent=2, ensure_ascii=True) + "\n",
+        encoding="utf-8",
+    )
+
+    print(f"Generated publication package in {target_dir}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

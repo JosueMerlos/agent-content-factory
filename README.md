@@ -27,6 +27,7 @@ El repositorio ya está preparado para compartirse en GitHub con:
 - estructura de skills consistente,
 - validador local en `./scripts/validate-skills`,
 - workflow de GitHub Actions para validar el catálogo,
+- scripts base para consolidar handoffs entre skills,
 - plantillas básicas de issues y pull requests.
 
 El repositorio usa licencia `Apache-2.0`. La checklist de publicación está en [docs/github-release-checklist.md](docs/github-release-checklist.md).
@@ -86,9 +87,21 @@ Validar el catálogo:
 ./scripts/validate-skills
 ```
 
+Generar un paquete de publicación desde handoffs:
+
+```bash
+./scripts/generate-publication-package \
+  --input templates/handoffs/youtube-publication-bundle.template.json \
+  --output-dir out
+```
+
 Guía de colaboración:
 
 [CONTRIBUTING.md](CONTRIBUTING.md)
+
+Documentación de handoffs:
+
+[docs/handoffs-and-packages.md](docs/handoffs-and-packages.md)
 
 ## Cómo usar este ecosistema
 
