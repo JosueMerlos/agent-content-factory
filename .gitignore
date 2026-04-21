@@ -2,3 +2,5 @@
 dist/
 out/
 tmp/
+
+**/__pycache__/

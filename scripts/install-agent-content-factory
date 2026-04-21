@@ -121,7 +121,6 @@ def build_skill_markdown(manifest_entry: dict, agent: str) -> str:
     source_dir = REPO_ROOT / manifest_entry["source_dir"]
     skill_version = parse_skill_version(source_dir / "skill.yaml")
     adapter = strip_heading(adapter_file(source_dir, agent).read_text(encoding="utf-8"))
-    reference = strip_heading((source_dir / "README.md").read_text(encoding="utf-8"))
 
     extra = ""
     if manifest_entry.get("copy_presets"):
@@ -156,9 +155,7 @@ This is an installed skill package generated from the `agent-content-factory` re
 
 {adapter}
 
-{extra}## Canonical Reference
-
-{reference}"""
+{extra}"""
 
 
 def ensure_managed_target(path: Path, force: bool) -> None:
@@ -206,12 +203,6 @@ def install_skill(target_root: Path, manifest_entry: dict, agent: str, mode: str
         build_skill_markdown(manifest_entry, agent),
         encoding="utf-8",
     )
-
-    link_or_copy(source_dir / "README.md", destination / "REFERENCE.md", mode)
-
-    shutil.copy2(source_dir / "examples" / "README.md", destination / "EXAMPLES.md")
-    shutil.copy2(source_dir / "tests" / "README.md", destination / "TESTS.md")
-    shutil.copy2(source_dir / "skill.yaml", destination / "skill.yaml")
 
     if manifest_entry.get("copy_presets"):
         preset_dir = destination / "presets"
