@@ -107,7 +107,14 @@ Instalar la capa orquestadora en agentes:
 Windows (PowerShell):
 
 ```powershell
-.\scripts\install-agent-content-factory.ps1 --agent all --mode copy
+# Si PowerShell bloquea scripts, usa bypass temporal:
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\install-agent-content-factory.ps1 --agent all --mode copy
+```
+
+Windows sin clonar el repo:
+
+```powershell
+.\scripts\install-agent-content-factory-remote.cmd --agent all --mode copy
 ```
 
 Guía de colaboración:

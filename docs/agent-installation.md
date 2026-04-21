@@ -24,6 +24,45 @@ También puedes invocar Python directamente:
 py -3 .\scripts\install-agent-content-factory --agent all --mode copy
 ```
 
+### Windows: Troubleshooting
+
+#### "No se puede cargar el archivo...ps1 porque la ejecución de scripts está deshabilitada"
+
+PowerShell bloquea scripts por defecto. Ejecuta con bypass temporal:
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\install-agent-content-factory.ps1 --agent all --mode copy
+```
+
+Esto no modifica la política del sistema, solo ejecuta ese script.
+
+#### "python" abre Microsoft Store
+
+En Windows moderno, `python` puede ser un alias a la Microsoft Store. Instala Python desde [python.org](https://www.python.org/downloads/) o verifica la ruta:
+
+```powershell
+# Encuentra el ejecutable real
+where python
+# Si apunta a la Store, usa la ruta directa, ej:
+& "C:\Users\TuUsuario\AppData\Local\Programs\Python\Python313\python.exe" -3 .\scripts\install-agent-content-factory --agent all --mode copy
+```
+
+#### Python no está en PATH
+
+Instala Python 3 y durante la instalación marca la opción **"Add Python to PATH"**. Si ya tienes Python instalado, verificalo:
+
+```powershell
+py --version
+python --version
+python3 --version
+```
+
+Si ninguno responde, reinicia la terminal después de instalar Python.
+
+#### Las skills no aparecen después de instalar
+
+El agente puede necesitar detectar las nuevas skills. Cierra y abre el agente de nuevo, o en Código/OpenCode, abre una sesión nueva.
+
 Esto instala paquetes de skills administrados por este repo en:
 
 - `~/.codex/skills`
@@ -83,13 +122,50 @@ Una vez instalado, la persona solo debería abrir el chat de su agente y escribi
 - Si el agente necesita refrescar skills, reinícialo.
 - En entornos con skill registry, conviene correr el proceso de actualización de skills si el agente lo soporta.
 
-## Futuro
+## Instalación remota (Windows)
 
-Cuando el repo esté publicado en GitHub, se puede envolver este instalador en un bootstrap remoto tipo:
+Si no tienes el repo clonado o prefieres una instalación directa desde GitHub:
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/<owner>/<repo>/main/scripts/install-agent-content-factory | bash
+```powershell
+.\scripts\install-agent-content-factory-remote.cmd --agent all --mode copy
 ```
 
-Eso requiere ajustar el flujo para que el script remoto descargue el repo o un paquete mínimo antes de instalar.
+Este script:
+1. Verifica conexión a GitHub.
+2. Descarga el repo como ZIP.
+3. Extrae el contenido a una carpeta temporal.
+4. Ejecuta el instalador `.ps1` con `ExecutionPolicy Bypass`.
+5. Propaga el exit code del instalador.
+6. Limpia los archivos temporales.
+
+**Argumentos disponibles:**
+
+```powershell
+--agent   all, codex, claude, opencode    # default: all
+--mode    copy, link                     # default: copy
+--help    Muestra usage y ejemplos
+```
+
+**Ejemplos:**
+
+```powershell
+.\scripts\install-agent-content-factory-remote.cmd --agent all --mode copy
+.\scripts\install-agent-content-factory-remote.cmd --agent codex
+.\scripts\install-agent-content-factory-remote.cmd --help
+```
+
+**Errores comunes:**
+
+- `[ERROR] No se pudo conectar a GitHub` → verifica conexión a internet o usa el instalador local.
+- `[ERROR] El instalador fallo` → revisa los mensajes previos y verifica que Python esté instalado.
+
+**Nota:** Necesitas conexión a internet. El owner del repo debe coincidir con `--repo-owner` si Personal Token Authentication está habilitado en tu entorno.
+
+###Linux/macOS
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/JosueMerlos/agent-content-factory/main/scripts/install-agent-content-factory | bash
+```
+
+Esto funciona si el script Python se hace ejecutable y la detección de Python es automática.
 
